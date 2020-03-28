@@ -67,7 +67,7 @@
               <p class='text-muted'>
               {% if user.is_authenticated %}
                 <ul class="list-group">
-                  <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a></li>
+                  <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{% url 'myprofile' %}">Profile</a></li>
                   <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{% url 'post-create' %}">New post</a></li>
                   <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{% url 'user-posts' user.username %}">my posts</a></li>
                   <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{% url 'logout' %}">Log out</a></li>
