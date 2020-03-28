@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'taggit',
     'blog.apps.BlogConfig',
+    'contract.apps.ContractConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
     'django.contrib.admin',
