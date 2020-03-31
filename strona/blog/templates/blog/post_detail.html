@@ -13,9 +13,11 @@
           </div>
           <h2 class="article-title">{{ object.title }}</h2>
           <p class="article-content">{{ object.content }}</p>
-          {% for request in post.request_set.all %}
-            <div>{{ request }}</div>
-          {% endfor %}
+          <div>
+              {% for request in post.request_set.all %}
+                <div><a href="{% url 'profile' request.applicant.id %}">{{ request.applicant }}</a></div>
+              {% endfor %}
+          </div>
           {% for tag in post.tags.all %}
           <a href="{% url 'tagged' tag.slug %}" class="mr-2">#{{ tag.name }}</a>
           {% endfor %}

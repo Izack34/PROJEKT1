@@ -2,12 +2,17 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div class="content-section">
-      <div class="media">
-        <img class="rounded-circle account-img" src="{{ u_profile.image.url }}">
-        <div class="media-body">
-          <h2 class="account-heading">{{ u_profile.user.username }}</h2>
-          <p class="text-secondary">{{ u_profile.user.email }}</p>
-        </div>
+  <div class="media">
+    <img class="rounded-circle account-img" src="{{ u_profile.image.url }}">
+    <div class="media-body">
+      <h2 class="account-heading">{{ u_profile.user.username }}</h2>
+      <p class="text-secondary">{{ u_profile.user.email }}</p>
+      <form action="{% url 'offer-manager' %}", method="POST">
+          {% csrf_token %}
+            <input type="hidden" name="user-id" value="{{ u_profile.user.id }}">
+            <input type="submit" class="btn btn-primary btn-sm" value="make offer">
+      </form>
+    </div>
   </div>
 </div>
 {% endblock content %}
