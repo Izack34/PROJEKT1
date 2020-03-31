@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    {% for message in custom_messages %}
+    {% if message.m_type == "green" %}
+        <div class="alert alert-success" role="alert">
+    {% elif message.m_type == "red" %}
+        <div class="alert alert-danger" role="alert">
+    {% elif message.m_type == "yellow" %}
+        <div class="alert alert-warning" role="alert">
+    {% endif %}
+            <a href="{% url 'profile' message.sender.id %}">{{ message.sender }}</a>
+
+            <a href="{% url 'profile' message.to.id %}">{{ message.to }}</a>
+            <span></span>
+            <span>{{ message.text }}</span>
+            {% if message.offer != None %} 
+                <a href="{% url 'offer-manager' message.offer.id %}">{{ message.offer }}</a>
+            {% endif %}
+            <form style="display: inline;" action="delete-message" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="message_id" value="{{message.id}}">
+                <button type="submit" class="close" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </form>
+        </div>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'contract/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {{ offer.status }}
+    <form action="{% url 'make-offer' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+          <fieldset class="form-group">
+              <legend class ="border-bottom mb-4">Offer info</legend>
+              {{ form|crispy }}
+              {% if offer == None %}
+                  <input class="btn btn-outline-info" name="make" type="submit" value="Make offer">
+              {% elif offer.status == "sent"  and user == offer.executor %}
+                  <input class="btn btn-success" name="apply" type="submit" value="Apply">
+                  <input class="btn btn-warning" name="resend" type="submit" value="Resend">
+                  <input class="btn btn-danger" name="reject" type="submit" value="Reject">
+              {% elif offer.status == "applied" and user == offer.client %}
+                  <input class="btn btn-success" name="approve" type="submit" value="Approve">
+                  <input class="btn btn-warning" name="resend" type="submit" value="Resend">
+                  <input class="btn btn-danger" name="reject" type="submit" value="Reject">
+              {% endif %}
+          </fieldset>
+          <div class="form-group">
+          </div>
+    </form>
+{% endblock content %}

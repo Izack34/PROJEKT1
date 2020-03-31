@@ -1,0 +1,31 @@
+{% extends 'contract/base.html' %}
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Client</th>
+                <th>Executor</th>
+                <th>Post</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Offer detail</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for offer in offers %}
+                <tr> 
+                    <td><a href="{% url 'profile' offer.client.id %}">{{ offer.client }}</a></td>
+                    <td><a href="{% url 'profile' offer.executor.id %}">{{offer.executor }}</a></td>
+                    {% if offer.post != None %}
+                        <td><a href="{% url 'post-detail' offer.post.id %}">{{ offer.post }}</a></td>
+                    {% else %}
+                        <td>Post is closed</td>
+                    {% endif %}
+                    <td>{{ offer.deadline }}</td>
+                    <td>{{ offer.status }}</td>
+                    <td><a href="{% url 'offer-manager' offer.id %}">Go to offer</a><td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
