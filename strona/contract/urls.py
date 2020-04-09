@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (contract_manager, make_request,
                     offer_manager, make_offer, offer_list,
-                    inbox, delete_message)
+                    inbox, delete_message, inbox_notification)
 
 
 urlpatterns = [
@@ -13,4 +13,5 @@ urlpatterns = [
     path('offer-list', offer_list, name='offer-list'),
     path("inbox", inbox, name='inbox'),
     path("delete-message", delete_message, name="delete-message"),
+    path("inbox-notification", inbox_notification, name="inbox-notification"),
 ]

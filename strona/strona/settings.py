@@ -67,7 +67,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'contract.context_processor.new_messages',
             ],
         },
     },
@@ -133,4 +132,6 @@ CRISPY_TEMPLATE_PACK ='bootstrap4'
 LOGIN_REDIRECT_URL ='blog-home'
 LOGIN_URL= 'login'
 
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]

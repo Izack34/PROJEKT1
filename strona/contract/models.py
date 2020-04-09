@@ -40,3 +40,4 @@ class Message(models.Model):
     text = models.CharField(max_length=200)
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE, null=True)
     m_type = models.CharField(max_length=100)
+    viewed = models.BooleanField(default=False)

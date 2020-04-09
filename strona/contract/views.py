@@ -1,7 +1,8 @@
+import time
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, StreamingHttpResponse
 from .forms import ContractForm, OfferForm
 from .models import Request, Offer, Contract, Message
 from blog.models import Post
@@ -150,6 +151,9 @@ def make_offer(request):
 @login_required
 def inbox(request):
     messages = Message.objects.filter(to=request.user)
+    for message in messages:
+        message.viewed = True
+        message.save()
     return render(request, "contract/inbox.html",
                   {'custom_messages': messages})
 
@@ -161,3 +165,16 @@ def delete_message(request):
         message = Message.objects.get(id=message_id)
         message.delete()
     return redirect("inbox")
+
+
+def inbox_notification(request):
+    def event_stream():
+        while True:
+            time.sleep(3)
+            new_messages = Message.objects.filter(viewed=False, to=request.user)
+            result = 0
+            if new_messages:
+                result = new_messages.count()
+            yield "data: %d\n\n" % result
+    return StreamingHttpResponse(event_stream(),
+                                 content_type="text/event-stream")
