@@ -100,7 +100,11 @@ def make_offer(request):
             offer.save()
         elif request.POST.get("resend") is not None:
             offer = Offer.objects.get(id=request.POST.get("offer_id", ""))
-            offer.status = "resended"
+            if offer.status == "sent" or offer.status == "resendedToE":
+                offer.status = "resendedToC"
+            elif offer.status == "resendedToC":
+                offer.status = "resendedToE"
+
             if request.user == offer.client:
                 sender = offer.client
                 to = offer.executor
@@ -171,7 +175,8 @@ def inbox_notification(request):
     def event_stream():
         while True:
             time.sleep(3)
-            new_messages = Message.objects.filter(viewed=False, to=request.user)
+            new_messages = Message.objects.filter(viewed=False,
+                                                  to=request.user)
             result = 0
             if new_messages:
                 result = new_messages.count()
