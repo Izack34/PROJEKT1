@@ -3,3 +3,8 @@
 *.log
 *.sql
 *.sqlite3
+venv/*
+__pycache__/*
+__pycache__ 
+*.swp
+*.swo
