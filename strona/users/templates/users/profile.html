@@ -8,6 +8,33 @@
           <h2 class="account-heading">{{ u_profile.user.username }}</h2>
           <p class="text-secondary">{{ u_profile.user.email }}</p>
         </div>
-  </div>
+        </div>
+</div>
+
+<div class="content-section">
+    <div class="media">
+        <div class="media-body">
+        {% if user.is_authenticated %}
+          <form method="Post" enctype="multipart/form-data">
+        {% csrf_token %}
+              {{ form|crispy }}
+              <button class="btn btn-outline-info" type="submit">comment</button>
+        </form>
+        {% else %}
+          do you want comment? <a class="ml-2" href="{% url 'login' %}">Login</a>
+        {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="content-section">
+    <div class="media">
+        <div class="media-body">
+        <h1 class="account-heading">Comments:</h1>
+        {% for comm in comments %}
+          <p class="text-secondary">{{ comm.author }}: {{comm.content}}</p>
+        {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock content %}

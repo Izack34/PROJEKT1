@@ -22,3 +22,10 @@ class Profile(models.Model):
             img.save(self.image.path)
 
 
+class Comment(models.Model):
+    content = models.TextField()
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.id} comment'

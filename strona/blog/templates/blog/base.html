@@ -28,8 +28,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarToggle">
               <div class="navbar-nav mr-auto">
-                <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
-                <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
+                <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
+                <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
               </div>
               <!-- Navbar Right Side -->
               <div class="navbar-nav">
@@ -69,13 +69,13 @@
                 <ul class="list-group">
                   <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{% url 'myprofile' %}">Profile</a></li>
                   <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{% url 'post-create' %}">New post</a></li>
-                  <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{% url 'user-posts' user.username %}">my posts</a></li>
+                  <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{% url 'user-posts' user.username %}">My posts</a></li>
                   <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{% url 'logout' %}">Log out</a></li>
                 </ul>
               {% else %}
                 <ul class="list-group">
                   <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{% url 'login' %}">Login</a></li>
-                  <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{% url 'register' %}">register</a></li>
+                  <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{% url 'register' %}">Register</a></li>
                 </ul>
               {% endif %}
               </p>

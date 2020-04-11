@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import UserRegisterForm,UserUpdateForm,ProfileUpdateForm
-from .models import Profile
+from .forms import UserRegisterForm,UserUpdateForm,ProfileUpdateForm, CommentForm
+from .models import Profile,Comment
 
 def register(request):
     if request.method == 'POST':
@@ -16,11 +16,32 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html',{'form': form})
 
+
+
 def view_profile(request, pk):
+    profile_instance=Profile.objects.filter(user_id=pk).first()
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.instance.profile = profile_instance
+            form.instance.author = request.user
+            form.save()
+            messages.success(request, 'comment created!')
+            return redirect(f'/profile/{pk}')
+    else:
+        form = CommentForm()
+
     context= {
-        'u_profile': Profile.objects.filter(user_id=pk).first()
+        'form': form,
+        'u_profile': profile_instance,
+        'comments': Comment.objects.filter(profile=profile_instance)
     }
+    
+    
     return render(request, 'users/profile.html', context)
+
+
 
 @login_required
 def my_profile(request):
