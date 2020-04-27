@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'contract.apps.ContractConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
+    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -110,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
@@ -134,4 +135,8 @@ LOGIN_URL= 'login'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
+]
+
+CRONJOBS = [
+    ('*/2 * * * *', 'contract.contractcron.contract_cron_job')
 ]

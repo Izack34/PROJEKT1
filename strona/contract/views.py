@@ -1,8 +1,10 @@
 import time
+import os
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponseForbidden, StreamingHttpResponse
+from django.http import HttpResponseForbidden, StreamingHttpResponse, HttpResponse
 from .forms import ContractForm, OfferForm
 from .models import Request, Offer, Contract, Message
 from blog.models import Post
@@ -17,7 +19,60 @@ def contract_manager(request):
 
 @login_required
 def contract_list(request):
-    pass
+    offers = (Offer.objects.filter(executor=request.user) |
+              Offer.objects.filter(client=request.user))
+    contracts = []
+    for offer in offers:
+        if offer.contract is not None:
+            contracts.append(offer.contract)
+    return render(request, 'contract/contract_list.html',
+                  {'contracts': contracts})
+
+
+@login_required
+def contract_detail(request, id=None):
+    contract_id = id
+    contract = Contract.objects.get(id=contract_id)
+    mypath = '%s/%d' % (settings.MEDIA_ROOT, contract.id) 
+    filenames = [str(contract.id)+'/'+f for f in os.listdir(mypath) if os.path.isfile(os.path.join(mypath, f))]
+    return render(request, 'contract/contract_detail.html',
+            {'contract': contract, 'filenames':filenames})
+
+
+def handle_uploaded_file(f, dirname, filename):
+    try:
+        os.mkdir('%s/%d' % (settings.MEDIA_ROOT, dirname))
+    except OSError as e:
+        if e.errno == 17:
+            pass
+    path = '%s/%d/%s' % (settings.MEDIA_ROOT, dirname, filename)
+    with open(path, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
+
+@login_required
+def contract_download(request, filename):
+    #file_path = os.path.join(settings.MEDIA_ROOT, id)
+    file_path = os.path.join(settings.MEDIA_ROOT, filename)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read())
+            response['Content-Type'] = 'multipart/form-data; boundary=something'
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
+
+
+@login_required
+def contract_processing(request, id=None):
+    contract = Contract.objects.get(id=id)
+    if request.user == contract.offer.executor and request.method == "POST":
+        files = request.FILES.getlist("file-field")
+        for f in files:
+            handle_uploaded_file(f, contract.id, f.name)
+    return render(request, 'contract/contract_detail.html',
+                  {'contract': contract})
 
 
 @login_required
@@ -171,6 +226,7 @@ def delete_message(request):
     return redirect("inbox")
 
 
+@login_required
 def inbox_notification(request):
     def event_stream():
         while True:

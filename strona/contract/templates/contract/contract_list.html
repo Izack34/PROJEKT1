@@ -1,0 +1,27 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">contract id</th>
+                <th scope="col">status</th>
+                <th scope="col">detail</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contract in contracts %}
+                <tr>
+                    <td>
+                        {{ contract.id }}
+                    </td>
+                    <td>
+                       {{ contract.status }} 
+                    </td>
+                    <td>
+                        <a href="{% url 'contract-detail' contract.id %}">Contract detail</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    <div>
+        <p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="{% url 'offer-manager' contract.offer.id %}">offer</a></li>
+                <li class="list-inline-item">deadline: {{ contract.offer.deadline }}</li>
+        {% if contract.offer.client == user %}
+                    <li class="list-inline-item">Executor:
+                        <a href="{% url 'profile' contract.offer.executor.id %}">{{ contract.offer.executor.username }}</a>
+                    </li> 
+            </ul>
+        </p>
+        <div>
+            <p>
+                <ul class="list-inline" style="padding: 10px; max-height: 100px; overflow-y:scroll; background-color:#b4b8b5;">
+                    {% for filename in filenames %}
+                        <li>
+                            <a href="{% url 'contract-download' filename %}" class="list-inline-item">
+                                {{ filename }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </p>
+        </div>
+        <div>
+                <form action="{% url 'contract-processing' contract.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="resend" class="btn btn-warning">
+                    <input type="submit" value="approve" class="btn btn-success">
+                </form>
+                <a href="#">Change deadline</a>
+         </div>
+         <div>
+             <a href="{% url 'contract-download' contract.id %}"></a>
+         </div>
+         {% elif contract.offer.executor == user %}
+                <li class="list-inline-item">Client:
+                    <a href="{% url 'profile' contract.offer.client.id %}">{{ contract.offer.client.username }}</a>
+                </li> 
+             </ul>
+         </p>
+         <div>
+                <form action="{% url 'contract-processing' contract.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" multiple id="file-field" name="file-field">
+                    <input type="submit" class="btn btn-success" name="submit">
+                </form>
+         </div>
+         {% endif %}
+    </div>
+{% endblock %}

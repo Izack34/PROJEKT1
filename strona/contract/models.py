@@ -13,13 +13,17 @@ class Offer(models.Model):
                                  on_delete=models.CASCADE,
                                  related_name='executor')
     post = models.ForeignKey('blog.Post', on_delete=models.SET_NULL, null=True)
-    # possible status: sent, resendedToC, resendedToE, applied, rejected, approved
+    # possible status: sent, resendedToC,
+    # resendedToE, applied, rejected, approved
     status = models.CharField(max_length=100)
 
     def __str__(self):
-        return("Offer(" + self.client.get_username() + " -> " + self.executor.get_username() + ")")
+        return("Offer(" + self.client.get_username() + " -> "
+               + self.executor.get_username() + ")")
+
 
 class Contract(models.Model):
+    # possible status: active, active-resended, approved, rejected
     status = models.CharField(max_length=100)
     offer = models.OneToOneField('Offer', on_delete=models.CASCADE)
 
