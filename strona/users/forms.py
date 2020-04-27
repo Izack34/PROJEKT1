@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Profile, Comment
 
 
+
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
 
@@ -16,14 +17,16 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username','email']
+        fields = ['username','email',]
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image']
+        fields = ['desc','image']
 
 class CommentForm(forms.ModelForm):
+    content = forms.CharField(widget=forms.TextInput(attrs={'size':'78'}), label="")     
     class Meta:
         model = Comment
         fields = ['content']
+        

@@ -5,7 +5,12 @@ chardet==3.0.4
 Click==7.0
 distlib==0.3.0
 Django==3.0.3
+django-braces==1.14.0
 django-crispy-forms==1.9.0
+django-generic-aggregation==0.4.0
+django-model-utils==4.0.0
+django-simple-ratings==0.3.3
+django-star-ratings==0.9.1
 django-taggit==1.2.0
 docutils==0.15.2
 filelock==3.0.12
@@ -33,6 +38,7 @@ pywin32==225
 requests==2.22.0
 six==1.13.0
 sqlparse==0.3.0
+swapper==1.1.2.post1
 urllib3==1.25.3
 virtualenv==20.0.5
 wxPython==4.0.7.post2

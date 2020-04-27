@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'star_ratings',
     'taggit',
     'blog.apps.BlogConfig',
     'contract.apps.ContractConfig',

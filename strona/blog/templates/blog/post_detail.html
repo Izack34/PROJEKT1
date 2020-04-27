@@ -6,21 +6,31 @@
           <div class="article-metadata">
             <a class="mr-2" href="{% url 'profile' post.author.id %}">{{ object.author }}</a>
             <small class="text-muted">{{ object.date_posted }}</small>
-            {% if object.author == user or  user.is_staff %}
+            {% if object.author == user %}
               <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
+            {% endif %}
+            {% if object.author == user or  user.is_staff %}
               <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
             {% endif %}
           </div>
           <h2 class="article-title">{{ object.title }}</h2>
           <p class="article-content">{{ object.content }}</p>
-          <div>
-              {% for request in post.request_set.all %}
-                <div><a href="{% url 'profile' request.applicant.id %}">{{ request.applicant }}</a></div>
-              {% endfor %}
-          </div>
+          <p><small class="text-muted">Expire date: {{ post.expire_date }}</small></p>
           {% for tag in post.tags.all %}
           <a href="{% url 'tagged' tag.slug %}" class="mr-2">#{{ tag.name }}</a>
           {% endfor %}
         </div>
 </article>
+{% if post.request_set.all and object.author == user %}
+<article class="media content-section">
+          <div>
+          <p class="article-content">Requests for {{ object.title }} from:</p>
+          <div>
+              {% for request in post.request_set.all %}
+                <p><a href="{% url 'profile' request.applicant.id %}"> {{ request.applicant }}({{ request.applicant.email }})</a></p>
+              {% endfor %}
+          </div>
+          </div>
+</article>
+{% endif %}
 {% endblock content %}
