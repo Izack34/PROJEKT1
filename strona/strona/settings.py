@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'contract.apps.ContractConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
+    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -68,7 +69,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'contract.context_processor.new_messages',
             ],
         },
     },
@@ -112,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
@@ -134,4 +134,10 @@ CRISPY_TEMPLATE_PACK ='bootstrap4'
 LOGIN_REDIRECT_URL ='home'
 LOGIN_URL= 'login'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
+CRONJOBS = [
+    ('*/2 * * * *', 'contract.contractcron.contract_cron_job')
+]

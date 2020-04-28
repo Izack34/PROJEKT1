@@ -13,13 +13,17 @@ class Offer(models.Model):
                                  on_delete=models.CASCADE,
                                  related_name='executor')
     post = models.ForeignKey('blog.Post', on_delete=models.SET_NULL, null=True)
-    # possible status: sent, resended, applied, rejected, approved
+    # possible status: sent, resendedToC,
+    # resendedToE, applied, rejected, approved
     status = models.CharField(max_length=100)
 
     def __str__(self):
-        return("Offer(" + self.executor.get_username() + " -> " + self.post.title + ")")
+        return("Offer(" + self.client.get_username() + " -> "
+               + self.executor.get_username() + ")")
+
 
 class Contract(models.Model):
+    # possible status: active, active-resended, approved, rejected
     status = models.CharField(max_length=100)
     offer = models.OneToOneField('Offer', on_delete=models.CASCADE)
 
@@ -40,3 +44,4 @@ class Message(models.Model):
     text = models.CharField(max_length=200)
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE, null=True)
     m_type = models.CharField(max_length=100)
+    viewed = models.BooleanField(default=False)

@@ -1,4 +1,4 @@
-{% extends 'contract/base.html' %}
+{% extends 'blog/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
     {{ offer.status }}
@@ -9,11 +9,11 @@
               {{ form|crispy }}
               {% if offer == None %}
                   <input class="btn btn-outline-info" name="make" type="submit" value="Make offer">
-              {% elif offer.status == "sent"  and user == offer.executor %}
+              {% elif offer.status == "sent" or offer.status == "resendedToE" and user == offer.executor %}
                   <input class="btn btn-success" name="apply" type="submit" value="Apply">
                   <input class="btn btn-warning" name="resend" type="submit" value="Resend">
                   <input class="btn btn-danger" name="reject" type="submit" value="Reject">
-              {% elif offer.status == "applied" and user == offer.client %}
+              {% elif offer.status == "applied" or offer.status == "resendedToC" and user == offer.client %}
                   <input class="btn btn-success" name="approve" type="submit" value="Approve">
                   <input class="btn btn-warning" name="resend" type="submit" value="Resend">
                   <input class="btn btn-danger" name="reject" type="submit" value="Reject">
