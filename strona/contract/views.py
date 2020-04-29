@@ -23,7 +23,7 @@ def contract_list(request):
               Offer.objects.filter(client=request.user))
     contracts = []
     for offer in offers:
-        if offer.contract is not None:
+        if hasattr(offer, "contract"):
             contracts.append(offer.contract)
     return render(request, 'contract/contract_list.html',
                   {'contracts': contracts})
@@ -188,6 +188,7 @@ def make_offer(request):
             offer = Offer.objects.get(id=request.POST.get("offer_id", ""))
             offer.status = "approved"
             contract = Contract(offer=offer, status="active")
+            contract.save()
             try:
                 os.mkdir('%s/%d' % (settings.MEDIA_ROOT, contract.id))
             except OSError as e:
