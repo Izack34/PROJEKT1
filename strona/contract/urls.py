@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (contract_manager, make_request,
                     offer_manager, make_offer, offer_list,
                     inbox, delete_message, inbox_notification,
-                    contract_list, contract_detail,
+                    contract_list, contract_detail, make_complain,
                     contract_processing, contract_download)
 
 
@@ -20,4 +20,5 @@ urlpatterns = [
     path("contract-detail/<int:id>", contract_detail, name='contract-detail'),
     path("contract-processing/<int:id>", contract_processing, name='contract-processing'),
     path("contract-download/<path:filename>", contract_download, name='contract-download'),
+    path("make-complain/<int:id>", make_complain, name='make-complain'),
 ]

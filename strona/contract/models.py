@@ -45,3 +45,7 @@ class Message(models.Model):
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE, null=True)
     m_type = models.CharField(max_length=100)
     viewed = models.BooleanField(default=False)
+
+
+class Complain(models.Model):
+    contract = models.OneToOneField('Contract', on_delete=models.CASCADE)

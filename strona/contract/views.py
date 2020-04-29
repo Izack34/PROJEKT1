@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseForbidden, StreamingHttpResponse, HttpResponse
 from .forms import ContractForm, OfferForm
-from .models import Request, Offer, Contract, Message
+from .models import Request, Offer, Contract, Message, Complain
 from blog.models import Post
 # from users.models import Profile
 
@@ -188,6 +188,11 @@ def make_offer(request):
             offer = Offer.objects.get(id=request.POST.get("offer_id", ""))
             offer.status = "approved"
             contract = Contract(offer=offer, status="active")
+            try:
+                os.mkdir('%s/%d' % (settings.MEDIA_ROOT, contract.id))
+            except OSError as e:
+                if e.errno == 17:
+                    pass
             message = Message(sender=request.user, to=offer.executor,
                               text="You offer is approved",
                               offer=offer, m_type="green")
@@ -239,3 +244,10 @@ def inbox_notification(request):
             yield "data: %d\n\n" % result
     return StreamingHttpResponse(event_stream(),
                                  content_type="text/event-stream")
+
+@login_required
+def make_complain(request, id=None):
+   contract = Contract.objects.get(id=id)
+   complain = Complain(contract=contract)
+   complain.save()
+   return redirect("home")

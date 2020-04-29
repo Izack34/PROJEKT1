@@ -30,7 +30,6 @@
                     <input type="submit" value="resend" class="btn btn-warning">
                     <input type="submit" value="approve" class="btn btn-success">
                 </form>
-                <a href="#">Change deadline</a>
          </div>
          <div>
              <a href="{% url 'contract-download' contract.id %}"></a>
@@ -48,6 +47,11 @@
                     <input type="submit" class="btn btn-success" name="submit">
                 </form>
          </div>
+         {% if contract.status == "rejected" %}
+         <div>
+             <a href="{% url 'make-complain' contract.id %}">Make complain</a>
+         </div>
+         {% endif %}
          {% endif %}
     </div>
 {% endblock %}
