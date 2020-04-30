@@ -20,12 +20,10 @@ Pillow==7.1.1
 pycodestyle==2.5.0
 pyflakes==2.1.1
 pytz==2019.3
-pywin32==225
 requests==2.22.0
 six==1.13.0
 swapper==1.1.2.post1
 urllib3==1.25.3
 virtualenv==20.0.5
-wxPython==4.0.7.post2
 zipp==3.0.0
 sqlparse==0.3.1
